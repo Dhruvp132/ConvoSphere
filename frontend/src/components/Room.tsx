@@ -16,7 +16,8 @@ declare global {
   }
 }
 
-const URL = "http://localhost:3000"
+// const URL = "http://localhost:3000"
+const URL = "https://convosphere-mep0.onrender.com"
 
 export const Room = ({
   name,
