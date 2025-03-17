@@ -44,6 +44,13 @@ export const Room = ({
   const remoteVideoRef = useRef<HTMLVideoElement>(null)
   const localVideoRef = useRef<HTMLVideoElement>(null)
 
+  const configuration = {
+    iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' }
+    ]
+  };
+
   useEffect(() => {
     const socket = io(URL)
     setSocket(socket)
@@ -54,7 +61,7 @@ export const Room = ({
       console.log("sending offer")
       setLobby(false)
       // this pc is for sending the offer party1 localDescription(sdp)
-      const pc = new RTCPeerConnection()
+      const pc = new RTCPeerConnection(configuration)
 
       setSendingPc(pc)
       if (localVideoTrack) {
@@ -98,7 +105,7 @@ export const Room = ({
     socket.on("offer", async ({ roomId, sdp: remoteSdp }) => {
       console.log("received offer")
       setLobby(false)
-      const pc = new RTCPeerConnection()
+      const pc = new RTCPeerConnection(configuration)
       // the line await was missing here which was causing the error as it is being settted before received
       await pc.setRemoteDescription(remoteSdp)
       const sdp = await pc.createAnswer()
